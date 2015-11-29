@@ -3,7 +3,6 @@
 class oldStyleFilter : public Filter
 {
 private:
-	Image container;
 	/* Override the method filter() */
 	Mat filter(Image img) {
 		Mat reservedImage(img.getSize(), CV_8UC3);
@@ -37,11 +36,6 @@ private:
 public:
 	/* Constructor of the class oldStyleFilter */
 	oldStyleFilter(Image img) {
-		this->container = Image(this->filter(img));
-	}
-
-	/* override show image */
-	void showImage() {
-		this->container.showImage();
+		this->img = this->filter(img);
 	}
 };
