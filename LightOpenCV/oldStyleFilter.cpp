@@ -1,10 +1,11 @@
-#include "filter.cpp"
+#include "filter.h"
 
 class oldStyleFilter : public Filter
 {
 private:
 	/* Override the method filter() */
 	Mat filter(Image img) {
+		/* create a reserved image */
 		Mat reservedImage(img.getSize(), CV_8UC3);
 		for (int y = 0; y < img.getHeight(); y++)
 		{

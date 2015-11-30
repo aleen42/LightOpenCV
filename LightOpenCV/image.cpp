@@ -31,6 +31,12 @@ public:
 		waitKey();
 	}
 
+	/* container */
+	/* image */
+	Mat getImage() {
+		return this->img;
+	}
+
 	/* properties */
 	/* width */
 	int getWidth() {

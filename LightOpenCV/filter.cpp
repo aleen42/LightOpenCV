@@ -15,4 +15,15 @@ protected:
 		b = (b < 0) ? 0 : b;
 		b = (b > 255) ? 255 : b;
 	}
+	/* check the legality of width and height */
+	void checkWH(int& width, int& height, int origin_width, int origin_height) {
+		/* ensure that the width is between 0 and the origin one */
+		width = (width < 0) ? 0 : width;
+		width = (width > origin_width - 1) ? origin_width - 1 : width;
+		/* ensure that the height is between 0 and the origin one */
+		height = (height < 0) ? 0 : height;
+		height = (height > origin_height - 1) ? origin_height - 1 : height;
+	}
+	/* filter to run */
+	virtual Mat filter() { return Mat(); }
 };

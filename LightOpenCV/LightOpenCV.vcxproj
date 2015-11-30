@@ -80,12 +80,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="filter.h" />
+    <ClInclude Include="filter_use.h" />
     <ClInclude Include="opencv_main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="oldStyleFilter.cpp" />
+    <ClCompile Include="radialBlurFilter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

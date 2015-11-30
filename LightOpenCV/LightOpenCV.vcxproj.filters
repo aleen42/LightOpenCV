@@ -13,10 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Filter">
+      <UniqueIdentifier>{bf53d9a2-6b79-404d-b779-b181a11e733a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Filter\filters">
+      <UniqueIdentifier>{c3c568eb-2bf8-4f1d-a20a-8db8e7bf749c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\filter">
+      <UniqueIdentifier>{05000451-0675-4111-9e73-640cc37455d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv_main.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="filter.h">
+      <Filter>头文件\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="filter_use.h">
+      <Filter>头文件\filter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -24,10 +39,13 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="filter.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Filter</Filter>
     </ClCompile>
     <ClCompile Include="oldStyleFilter.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Filter\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="radialBlurFilter.cpp">
+      <Filter>源文件\Filter\filters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
