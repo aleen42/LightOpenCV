@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="filter.cpp" />
+    <ClCompile Include="gaussianBlurFilter.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="oldStyleFilter.cpp" />
     <ClCompile Include="radialBlurFilter.cpp" />

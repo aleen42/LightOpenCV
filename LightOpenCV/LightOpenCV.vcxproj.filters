@@ -47,5 +47,8 @@
     <ClCompile Include="radialBlurFilter.cpp">
       <Filter>源文件\Filter\filters</Filter>
     </ClCompile>
+    <ClCompile Include="gaussianBlurFilter.cpp">
+      <Filter>源文件\Filter\filters</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,5 +3,6 @@
 
 #include "oldStyleFilter.cpp"
 #include "radialBlurFilter.cpp"
+#include "gaussianBlurFilter.cpp"
 
 #endif // !FILTERUSE_H
