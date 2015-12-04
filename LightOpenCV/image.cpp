@@ -8,7 +8,7 @@ protected:
 public:
 	/* constructors of the class */
 	Image() {}
-	Image(Mat img): img(img){}
+	Image(Mat img) : img(img){}
 	/* read the image from a local path */
 	void readImage(const char* path) {
 		/* set the path */
@@ -22,7 +22,11 @@ public:
 			exit(-1);
 		}
 	}
-
+	/* write the image to the local path */
+	void writeImage(const char* path) {
+		/* save the image */
+		imwrite(path, this->img);
+	}
 	/* a mothod to show the image */
 	void showImage() {
 		/* open the image */
@@ -30,13 +34,11 @@ public:
 		/* wait for the return */
 		waitKey();
 	}
-
 	/* container */
 	/* image */
 	Mat getImage() {
 		return this->img;
 	}
-
 	/* properties */
 	/* width */
 	int getWidth() {
