@@ -4,9 +4,9 @@ class Image
 {
 protected:
 	Mat img;											// the container of the image
-	const char* path;									// the path of the image
+	const char* path;									// the local path of the image
 public:
-	/* constructor of the class */
+	/* constructors of the class */
 	Image() {}
 	Image(Mat img): img(img){}
 	/* read the image from a local path */
@@ -17,7 +17,7 @@ public:
 		this->img = imread(path);
 		/* check existence */
 		if (this->img.empty()) {
-			cout << "Can not load image" << path << endl;
+			cout << "Can not load image from " << path << endl;
 			/* exit */
 			exit(-1);
 		}

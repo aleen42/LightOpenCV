@@ -1,4 +1,4 @@
-#include "image.cpp"
+#include "image.h"
 
 class Filter : public Image
 {

@@ -1,8 +1,9 @@
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef FILTER_CPP
+#define FILTER_CPP
 
 #include "filter.cpp"
 enum radialBlurType{
 	ROTATE, SCALE
 };
-#endif // !FILTER_H
+
+#endif // !FILTER_CPP

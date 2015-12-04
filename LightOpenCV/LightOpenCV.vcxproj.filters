@@ -13,14 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\Filter">
+    <Filter Include="源文件\Image">
+      <UniqueIdentifier>{f0214049-2595-4c39-8081-b25d6fdc33ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Image\Filter">
       <UniqueIdentifier>{bf53d9a2-6b79-404d-b779-b181a11e733a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Filter\filters">
+    <Filter Include="源文件\Image\Filter\filters">
       <UniqueIdentifier>{c3c568eb-2bf8-4f1d-a20a-8db8e7bf749c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\filter">
+    <Filter Include="源文件\Video">
+      <UniqueIdentifier>{c23c7f74-a977-4f9b-90c6-9f1cbec0b710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Image">
+      <UniqueIdentifier>{97f6b888-02d4-467c-87b7-e8ee26093826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Image\Filter">
       <UniqueIdentifier>{05000451-0675-4111-9e73-640cc37455d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Video">
+      <UniqueIdentifier>{5d2205bc-a484-4458-a77f-368d247042b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,27 +40,33 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="filter.h">
-      <Filter>头文件\filter</Filter>
+      <Filter>头文件\Image\Filter</Filter>
     </ClInclude>
-    <ClInclude Include="filter_use.h">
-      <Filter>头文件\filter</Filter>
+    <ClInclude Include="image.h">
+      <Filter>头文件\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="video.h">
+      <Filter>头文件\Video</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="image.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="filter.cpp">
-      <Filter>源文件\Filter</Filter>
+      <Filter>源文件\Image\Filter</Filter>
     </ClCompile>
     <ClCompile Include="oldStyleFilter.cpp">
-      <Filter>源文件\Filter\filters</Filter>
+      <Filter>源文件\Image\Filter\filters</Filter>
     </ClCompile>
     <ClCompile Include="radialBlurFilter.cpp">
-      <Filter>源文件\Filter\filters</Filter>
+      <Filter>源文件\Image\Filter\filters</Filter>
     </ClCompile>
     <ClCompile Include="gaussianBlurFilter.cpp">
-      <Filter>源文件\Filter\filters</Filter>
+      <Filter>源文件\Image\Filter\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>源文件\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="video.cpp">
+      <Filter>源文件\Video</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

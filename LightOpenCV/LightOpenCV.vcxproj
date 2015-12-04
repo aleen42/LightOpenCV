@@ -81,8 +81,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="filter.h" />
-    <ClInclude Include="filter_use.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="opencv_main.h" />
+    <ClInclude Include="video.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="filter.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="oldStyleFilter.cpp" />
     <ClCompile Include="radialBlurFilter.cpp" />
+    <ClCompile Include="video.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
