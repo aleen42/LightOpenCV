@@ -11,6 +11,7 @@ public:
 	/* constructors of the class */
 	Video() {}
 	Video(VideoCapture vdo) : vdo(vdo) {}
+	
 	/* read the video from the local path */
 	void readVideo(const char* path) {
 		/* set the path */
@@ -24,6 +25,7 @@ public:
 			exit(-1);
 		}
 	}
+
 	/* capture frame */
 	/* frame: the frame number */
 	Image capture(int frameNum){
@@ -57,6 +59,7 @@ public:
 		}
 		return images;
 	}
+
 	/* properties */
 	/* get the total number of frames */
 	int getTotalFramesNum() {

@@ -279,3 +279,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+======= privacy code =======
+lucas_kanade.h
+LucasKanade.cpp

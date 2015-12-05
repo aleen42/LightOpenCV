@@ -34,6 +34,18 @@
     <Filter Include="头文件\Video">
       <UniqueIdentifier>{5d2205bc-a484-4458-a77f-368d247042b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Common">
+      <UniqueIdentifier>{9dd404fa-7eba-42b3-86ef-706f15eb6fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Common">
+      <UniqueIdentifier>{d705e165-9c95-4507-ba36-d731cfd70899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Video\Track">
+      <UniqueIdentifier>{e2838b9f-bcfe-4602-b938-c21333b9464b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Video\Track">
+      <UniqueIdentifier>{18b5c651-4883-4b96-ba21-4d2ba47742f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv_main.h">
@@ -47,6 +59,12 @@
     </ClInclude>
     <ClInclude Include="video.h">
       <Filter>头文件\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="lucas_kanade.h">
+      <Filter>头文件\Video\Track</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +85,12 @@
     </ClCompile>
     <ClCompile Include="video.cpp">
       <Filter>源文件\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="LucasKanade.cpp">
+      <Filter>源文件\Video\Track</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
