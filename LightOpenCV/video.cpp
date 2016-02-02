@@ -47,6 +47,10 @@ public:
 		}
 	}
 
+	VideoCapture getVideo() {
+		return this->vdo;
+	}
+
 	/* capture frame */
 	/* frame: the frame number */
 	Image capture(int frameNum){
