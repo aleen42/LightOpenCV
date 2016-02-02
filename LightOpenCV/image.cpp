@@ -16,7 +16,7 @@ protected:
 	}
 
 	/* show the detection of squares */
-	void debugSquares(vector<vector<Point>> points) {
+	void debugSquares(vector<vector<Point> > points) {
 
 		for (int i = 0; i < points[0].size(); i++) {
 			printf("Point%d: (%d, %d)\n", i, points[0][i].x, points[0][i].y);
@@ -73,7 +73,7 @@ public:
 	}
 
 	/* detect squares algorithm by karlphillip */
-	vector<vector<Point>> detectSquare(bool debug = false) {
+	vector<vector<Point> > detectSquare(bool debug = false) {
 		/* blur will enhance edge detection */
 		Mat blurred(this->img);
 
@@ -82,9 +82,9 @@ public:
 		Mat gray0(blurred.size(), CV_8U), gray;
 
 		/* reserved Points array */
-		vector<vector<Point>> reserved;
+		vector<vector<Point> > reserved;
 		/* contours Points array*/
-		vector<vector<Point>> contours;
+		vector<vector<Point> > contours;
 
 		/* find squares in every color plane of the image */
 		for (int c = 0; c < 3; c++) {
