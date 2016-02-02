@@ -3,4 +3,8 @@
 
 #include "common.cpp"
 
+enum lucasKanadeType{
+	VIDEO, FRAMES
+};
+
 #endif // !COMMON_CPP
