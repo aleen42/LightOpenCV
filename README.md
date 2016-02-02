@@ -1,2 +1,2 @@
 # LightOpenCV
-- a light library of OpenCv in c++
+- a light library of OpenC in c++
