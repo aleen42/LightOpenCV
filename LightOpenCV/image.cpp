@@ -83,14 +83,14 @@ public:
 
 	/* threshold algorithm */
 	void thresholdImage(THRESHOLD_TYPE type) {
-		Mat grey;
+		Mat gray;
 		const double threshold_value = 0.0;
 		const double max_binary_value = 255.0;
 
-		/* convert grey */
-		cvtColor(this->img, grey, CV_BGR2GRAY);
+		/* convert gray */
+		cvtColor(this->img, gray, CV_BGR2GRAY);
 
-		threshold(grey, this->img, threshold_value, max_binary_value, type);
+		threshold(gray, this->img, threshold_value, max_binary_value, type);
 	}
 
 	/* detect squares algorithm by karlphillip */
@@ -172,17 +172,41 @@ public:
 	}
 
 	/* detect corner */
-	vector<Point2f> detectCorner() {
+	vector<Point2f> detectCorner(bool debug = false) {
 		vector<Point2f> Corners;
 
 		/* parameters */
-		const int maxCorners = 500;
-		const double qualityLevels = 0.6;
-		const double minDistance = 7.0;
-		const int blockSize = 7;
+		const int maxCorners = 4;
+		const double qualityLevels = 0.01;
+		const double minDistance = 10;
+		const int blockSize = 3;
 		const bool useHarrisDetector = false;
+		const int r = 5;
 
-		goodFeaturesToTrack(this->img, Corners, maxCorners, qualityLevels, minDistance, Mat(), blockSize, useHarrisDetector);
+		Mat gray;
+		cvtColor(this->img, gray, COLOR_BGR2GRAY);
+
+		goodFeaturesToTrack(gray, Corners, maxCorners, qualityLevels, minDistance, Mat(), blockSize, useHarrisDetector);
+		
+		if (debug) {
+			for (size_t i = 0; i < Corners.size(); i++) {
+				circle(this->img, Corners[i], r, Scalar(0, 0, 255), -1, 8);
+			}
+		}
+		
+		return Corners;
+	}
+
+	void fastDetectCorner(bool debug = false) {
+		vector<KeyPoint> keyPoints;
+
+		FastFeatureDetector detector(80);
+
+		detector.detect(this->img, keyPoints);
+
+		if (debug) {
+			drawKeypoints(this->img, keyPoints, this->img, Scalar::all(-1), DrawMatchesFlags::DRAW_OVER_OUTIMG);
+		}
 	}
 
 	/* write the image to the local path */
