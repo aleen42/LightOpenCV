@@ -16,7 +16,7 @@
  *      - Description: include the function of common transfering like
  *      			   converting type int to type string, etc.
  *      - Create Time: Dec 4th, 2015
- *      - Update Time: Feb 2nd, 2016 
+ *      - Update Time: Feb 3rd, 2016 
  *
  **********************************************************************/
 
