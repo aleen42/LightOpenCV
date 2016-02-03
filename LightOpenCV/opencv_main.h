@@ -5,7 +5,12 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <ctime>
+#include <fstream>
+#include <sstream>
 #include <opencv2/opencv.hpp>
+
+#include "cJSON.c"
 
 using namespace std;
 using namespace cv;

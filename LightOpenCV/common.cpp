@@ -47,4 +47,35 @@ public:
 		/* return the str */
 		return str;
 	}
+
+	/* convert double to string */
+	static string doubleToStr(double num) {
+		ostringstream os;
+
+		if (os << num) {			
+			return os.str();
+		}
+
+		return "invalid conversion"; 
+	}
+
+	/* error info print in json */
+	static void errorPrint(const char* errMsg) {
+		/* error parse */
+		cJSON* result = cJSON_CreateObject();
+		cJSON_AddStringToObject(result, "success", "false");
+		cJSON_AddStringToObject(result, "errMsg", errMsg);
+		cout << cJSON_Print(result) << endl;
+		cJSON_Delete(result);
+	}
+
+	/* successful info print in json */
+	static void successPrint(cJSON* msg) {
+		/* success parse */
+		cJSON* result = cJSON_CreateObject();
+		cJSON_AddStringToObject(result, "success", "true");
+		cJSON_AddItemToObject(result, "msg", msg);
+		cout << cJSON_Print(result) << endl;
+		cJSON_Delete(result);
+	}
 };
