@@ -46,6 +46,12 @@
     <Filter Include="头文件\Video\Track">
       <UniqueIdentifier>{18b5c651-4883-4b96-ba21-4d2ba47742f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Common\cJson">
+      <UniqueIdentifier>{b9ea251d-757b-417e-a246-50c4a5734167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Common\cJson">
+      <UniqueIdentifier>{99e2d54e-eb77-43f1-afcc-4f1e05b50874}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv_main.h">
@@ -65,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="lucas_kanade.h">
       <Filter>头文件\Video\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>头文件\Common\cJson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="LucasKanade.cpp">
       <Filter>源文件\Video\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>源文件\Common\cJson</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
