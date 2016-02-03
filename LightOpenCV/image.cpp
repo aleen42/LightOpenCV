@@ -200,9 +200,7 @@ public:
 	void fastDetectCorner(bool debug = false) {
 		vector<KeyPoint> keyPoints;
 
-		FastFeatureDetector detector(80);
-
-		detector.detect(this->img, keyPoints);
+		FAST(this->img, keyPoints, 80);
 
 		if (debug) {
 			drawKeypoints(this->img, keyPoints, this->img, Scalar::all(-1), DrawMatchesFlags::DRAW_OVER_OUTIMG);
