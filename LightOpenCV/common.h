@@ -2,8 +2,11 @@
 #define COMMON_CPP
 
 #include <ctime>
-#include "cJSON.h"
+#include <fstream>
 #include "common.cpp"
+
+#include "cJSON.c"
+
 
 enum lucasKanadeType{
 	VIDEO, FRAMES
