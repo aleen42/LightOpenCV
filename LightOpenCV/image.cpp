@@ -171,6 +171,20 @@ public:
 		return reserved;
 	}
 
+	/* detect corner */
+	vector<Point2f> detectCorner() {
+		vector<Point2f> Corners;
+
+		/* parameters */
+		const int maxCorners = 500;
+		const double qualityLevels = 0.6;
+		const double minDistance = 7.0;
+		const int blockSize = 7;
+		const bool useHarrisDetector = false;
+
+		goodFeaturesToTrack(this->img, Corners, maxCorners, qualityLevels, minDistance, Mat(), blockSize, useHarrisDetector);
+	}
+
 	/* write the image to the local path */
 	void writeImage(const char* path) {
 		/* save the image */
