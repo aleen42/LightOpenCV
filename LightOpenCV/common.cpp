@@ -74,7 +74,7 @@ public:
 		/* success parse */
 		cJSON* result = cJSON_CreateObject();
 		cJSON_AddStringToObject(result, "success", "true");
-		cJSON_AddItemToObject(result, "msg", msg);
+		cJSON_AddItemToObject(result, "data", msg);
 		cout << cJSON_Print(result) << endl;
 		cJSON_Delete(result);
 	}

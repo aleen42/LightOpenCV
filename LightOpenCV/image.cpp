@@ -183,7 +183,7 @@ public:
 		vector<Point2f> Corners;
 
 		/* parameters */
-		const int maxCorners = 20;
+		const int maxCorners = 200;
 		const double qualityLevels = 0.001;
 		const double minDistance = 10;
 		const int blockSize = 10;
@@ -197,7 +197,10 @@ public:
 		
 		if (debug) {
 			for (size_t i = 0; i < Corners.size(); i++) {
+				ostringstream os;
+				os << " (" << Corners[i].x << ", " << Corners[i].y << ")";
 				circle(this->img, Corners[i], r, Scalar(255, 255, 255), 2, 8);
+				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.3, Scalar(0, 0, 255), 1, 8);
 			}
 		}
 		
