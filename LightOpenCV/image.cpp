@@ -182,14 +182,14 @@ public:
 	}
 
 	/* detect corner */
-	vector<Point2f> detectCorner(bool debug = false, const char* path = "data.json") {
+	vector<Point2f> detectCorner(const char* quantity, bool debug = false, const char* path = "data.json") {
 		/* clock */
 		time_t start = clock();
 
 		vector<Point2f> Corners;
 
 		/* parameters */
-		const int maxCorners = 200;
+		const int maxCorners = atoi(quantity);
 		const double qualityLevels = 0.001;
 		const double minDistance = 10;
 		const int blockSize = 10;
