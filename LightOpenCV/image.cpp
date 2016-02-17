@@ -182,7 +182,10 @@ public:
 	}
 
 	/* detect corner */
-	vector<Point2f> detectCorner(bool debug = false) {
+	vector<Point2f> detectCorner(bool debug = false, const char* path = "data.json") {
+		/* clock */
+		time_t start = clock();
+
 		vector<Point2f> Corners;
 
 		/* parameters */
@@ -198,15 +201,41 @@ public:
 
 		goodFeaturesToTrack(gray, Corners, maxCorners, qualityLevels, minDistance, Mat(), blockSize, useHarrisDetector);
 		
-		if (debug) {
-			for (size_t i = 0; i < Corners.size(); i++) {
+		cJSON* pointsArray = cJSON_CreateArray();
+
+		for (size_t i = 0; i < Corners.size(); i++) {
+			if (debug) {
 				ostringstream os;
 				os << " (" << Corners[i].x << ", " << Corners[i].y << ")";
 				circle(this->img, Corners[i], r, Scalar(255, 255, 255), 2, 8);
 				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
 			}
+
+			/* create json */
+			cJSON* item = cJSON_CreateObject();
+			cJSON_AddNumberToObject(item, "x", x);
+			cJSON_AddNumberToObject(item, "y", y);
+
+			cJSON_AddItemToArray(pointsArray, item);
 		}
+
+		time_t end = clock();
+		cJSON* data = cJSON_CreateObject();
+		const char* duration = (Common::doubleToStr(double(end - start) / CLOCKS_PER_SEC) + "s").c_str();
+		cJSON_AddStringToObject(data, "time", duration);
 		
+		/* write the data.json */
+		ofstream file;
+		file.open(path, ios::out);
+		
+		if (file.is_open()) {
+			file << cJSON_Print(pointsArray);
+			cJSON_AddItemToObject(data, "data", pointsArray);
+			file.close();
+		}
+
+		Common::successPrint(data);
+
 		return Corners;
 	}
 
