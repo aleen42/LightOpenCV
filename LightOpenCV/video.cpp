@@ -41,9 +41,9 @@ public:
 		this->vdo = VideoCapture(this->path);
 		/* check existence */
 		if (!this->vdo.isOpened()) {
-			ostringstream os;
-			os << "Cannot load video from" << path;
-			Common::errorPrint(os.str().c_str());
+			// ostringstream os;
+			// os << "Cannot load video from" << path;
+			// Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
 		}
