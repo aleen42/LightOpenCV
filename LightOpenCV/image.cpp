@@ -20,6 +20,7 @@
  **********************************************************************/
 
 #include "opencv_main.h"
+#include "common.h"
 
 class Image
 {
