@@ -39,13 +39,8 @@ public:
 		this->path = path;
 		/* read the video according to the path */
 		
-		try {
-			this->vdo = VideoCapture(this->path);
-		} catch (...) {
-			cout << "error" << endl;
-			exit(-1);
-		}
-		
+		this->vdo = VideoCapture(this->path);
+
 		/* check existence */
 		if (!this->vdo.isOpened()) {
 			ostringstream os;
