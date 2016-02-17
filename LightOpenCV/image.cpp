@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Feb 4th, 2016 
+ *      - Update Time: Feb 17th, 2016 
  *
  **********************************************************************/
 
@@ -74,7 +74,9 @@ public:
 		this->img = imread(path);
 		/* check existence */
 		if (this->img.empty()) {
-			cout << "Can not load image from " << path << endl;
+			ostringstream os;
+			os << "Cannot load image from" << path;
+			Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
 		}
@@ -200,7 +202,7 @@ public:
 				ostringstream os;
 				os << " (" << Corners[i].x << ", " << Corners[i].y << ")";
 				circle(this->img, Corners[i], r, Scalar(255, 255, 255), 2, 8);
-				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.3, Scalar(0, 0, 255), 1, 8);
+				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
 			}
 		}
 		

@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: video class for all the video obj
  *      - Create Time: Dec 4th, 2015
- *      - Update Time: Feb 2nd, 2016 
+ *      - Update Time: Feb 17th, 2016 
  *
  **********************************************************************/
 
@@ -41,7 +41,9 @@ public:
 		this->vdo = VideoCapture(this->path);
 		/* check existence */
 		if (!this->vdo.isOpened()) {
-			cout << "Can not load video from " << path << endl;
+			ostringstream os;
+			os << "Cannot load video from" << path;
+			Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
 		}
