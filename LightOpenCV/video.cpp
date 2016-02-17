@@ -38,12 +38,19 @@ public:
 		/* set the path */
 		this->path = path;
 		/* read the video according to the path */
-		this->vdo = VideoCapture(this->path);
+		
+		try {
+			this->vdo = VideoCapture(this->path);
+		} catch (...) {
+			cout << "error" << endl;
+			exit(-1);
+		}
+		
 		/* check existence */
 		if (!this->vdo.isOpened()) {
-			// ostringstream os;
-			// os << "Cannot load video from" << path;
-			// Common::errorPrint(os.str().c_str());
+			ostringstream os;
+			os << "Cannot load video from" << path;
+			Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
 		}
