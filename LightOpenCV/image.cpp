@@ -223,6 +223,9 @@ public:
 		cJSON* data = cJSON_CreateObject();
 		const char* duration = (Common::doubleToStr(double(end - start) / CLOCKS_PER_SEC) + "s").c_str();
 		cJSON_AddStringToObject(data, "time", duration);
+
+		cJSON_AddNumberToObject(data, "width", this->img.cols);
+		cJSON_AddNumberToObject(data, "height", this->img.rows);
 		
 		/* write the data.json */
 		ofstream file;
