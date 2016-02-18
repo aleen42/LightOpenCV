@@ -215,6 +215,8 @@ public:
 			cJSON* item = cJSON_CreateObject();
 			cJSON_AddNumberToObject(item, "xPrecent", (double)Corners[i].x / this->img.cols);
 			cJSON_AddNumberToObject(item, "yPrecent", (double)Corners[i].y / this->img.rows);
+			cJSON_AddNumberToObject(item, "calcX", (double)Corners[i].x / this->img.cols * this->img.cols);
+			cJSON_AddNumberToObject(item, "calcY", (double)Corners[i].y / this->img.rows * this->img.rows);
 			cJSON_AddNumberToObject(item, "x", Corners[i].x);
 			cJSON_AddNumberToObject(item, "y", Corners[i].y);
 
