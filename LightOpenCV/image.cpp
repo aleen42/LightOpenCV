@@ -213,8 +213,8 @@ public:
 
 			/* create json */
 			cJSON* item = cJSON_CreateObject();
-			cJSON_AddNumberToObject(item, "x", Corners[i].x / this->img.cols);
-			cJSON_AddNumberToObject(item, "y", Corners[i].y / this->img.rows);
+			cJSON_AddNumberToObject(item, "x", (double)Corners[i].x / this->img.cols);
+			cJSON_AddNumberToObject(item, "y", (double)Corners[i].y / this->img.rows);
 
 			cJSON_AddItemToArray(pointsArray, item);
 		}
