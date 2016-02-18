@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Feb 17th, 2016 
+ *      - Update Time: Feb 18th, 2016 
  *
  **********************************************************************/
 
@@ -213,8 +213,8 @@ public:
 
 			/* create json */
 			cJSON* item = cJSON_CreateObject();
-			cJSON_AddNumberToObject(item, "x", Corners[i].x);
-			cJSON_AddNumberToObject(item, "y", Corners[i].y);
+			cJSON_AddNumberToObject(item, "x", Corners[i].x / this->img.cols);
+			cJSON_AddNumberToObject(item, "y", Corners[i].y / this->img.rows);
 
 			cJSON_AddItemToArray(pointsArray, item);
 		}
