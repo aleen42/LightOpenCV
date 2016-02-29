@@ -190,9 +190,9 @@ public:
 
 		/* parameters */
 		const int maxCorners = atoi(quantity);
-		const double qualityLevels = 0.001;
-		const double minDistance = 10;
-		const int blockSize = 10;
+		const double qualityLevels = 0.6;
+		const double minDistance = 7;
+		const int blockSize = 7;
 		const bool useHarrisDetector = false;
 		const int r = 5;
 
