@@ -27,6 +27,8 @@ class Image
 protected:
 	Mat img;											// the container of the image
 	const char* path;									// the local path of the image
+	Point2f markedPoint;								// the marked point when cropping images, which is (0, 0) by default
+	Point2f dropPoint;									// stroing (dx, dy) when cropping images, which is (0, 0) by default
 
 	/* calculate the angle according to 3 points */
 	double angle(Point pt1, Point pt2, Point pt0) {
@@ -65,7 +67,10 @@ protected:
 public:
 	/* constructors of the class */
 	Image() {}
-	Image(Mat img) : img(img){}
+	Image(Mat img) : img(img) {
+		this->markedPoint = Point2f(0.0, 0.0);
+		this->dropPoint = Point2f(0.0, 0.0);
+	}
 
 	/* read the image from a local path */
 	void readImage(const char* path) {
@@ -203,20 +208,33 @@ public:
 		
 		cJSON* pointsArray = cJSON_CreateArray();
 
+		double distance = 99999.0;
+		Point2f shortestPoint;
+
 		for (size_t i = 0; i < Corners.size(); i++) {
+			double x = (double)Corners[i].x;
+			double y = (double)Corners[i].y;
+
 			if (debug) {
-				ostringstream os;
-				os << " (" << Corners[i].x << ", " << Corners[i].y << ")";
 				circle(this->img, Corners[i], r, Scalar(255, 255, 255), 2, 8);
-				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
+				// ostringstream os;
+				// os << " (" << x << ", " << y << ")";
+				// putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
+			}
+
+			double newDistance = sqrt((x - this->markedPoint.x) * (x - this->markedPoint.x) + (y - this->markedPoint.y) * (y - this->markedPoint.y));
+
+			if (distance > newDistance) {
+				shortestPoint = Point2f(x, y);
+				distance = newDistance;
 			}
 
 			/* create json */
 			cJSON* item = cJSON_CreateObject();
-			cJSON_AddNumberToObject(item, "xPrecent", (double)Corners[i].x / this->img.cols);
-			cJSON_AddNumberToObject(item, "yPrecent", (double)Corners[i].y / this->img.rows);
-			cJSON_AddNumberToObject(item, "x", Corners[i].x);
-			cJSON_AddNumberToObject(item, "y", Corners[i].y);
+			cJSON_AddNumberToObject(item, "xPrecent",  x / this->img.cols);
+			cJSON_AddNumberToObject(item, "yPrecent", y / this->img.rows);
+			cJSON_AddNumberToObject(item, "x", x);
+			cJSON_AddNumberToObject(item, "y", y);
 
 			cJSON_AddItemToArray(pointsArray, item);
 		}
@@ -229,19 +247,54 @@ public:
 		cJSON_AddNumberToObject(data, "width", this->img.cols);
 		cJSON_AddNumberToObject(data, "height", this->img.rows);
 		
+
+		cJSON* item = cJSON_CreateObject();
+		cJSON_AddNumberToObject(item, "x", shortestPoint.x);
+		cJSON_AddNumberToObject(item, "y", shortestPoint.y);
+		cJSON_AddItemToObject(data, "neartestPoint", item);
+
+		item = cJSON_CreateObject();
+		cJSON_AddNumberToObject(item, "x", dropPoint.x);
+		cJSON_AddNumberToObject(item, "y", dropPoint.y);
+		cJSON_AddItemToObject(data, "dropValue", item);
+
 		/* write the data.json */
 		ofstream file;
 		file.open(path, ios::out);
 		
 		if (file.is_open()) {
-			file << cJSON_Print(pointsArray);
 			cJSON_AddItemToObject(data, "data", pointsArray);
+			file << cJSON_Print(data);
 			file.close();
 		}
 
 		Common::successPrint(data);
 
 		return Corners;
+	}
+
+	Image cropImageWithCircle(Point2f center, double radius) {
+		/* initiate marked point */
+		this->markedPoint = Point2f(center.x, center.y);
+
+		/* for calculate x and y to see whether the start point is outside the image you want to crop */
+		double x = this->markedPoint.x - radius;
+		x = x < 0 ? 0.0 : x;
+		double y = this->markedPoint.y - radius;
+		y = y < 0 ? 0.0 : y;
+
+		/* if the start point is outside the image, the radius should be change relatively */
+		double realWidth = x == 0.0 ? this->markedPoint.x + radius : radius * 2;
+		double realHeight = y == 0.0 ? this->markedPoint.y + radius : radius * 2;
+
+		/* initiate the drop value */
+		this->dropPoint = Point2f(x, y);
+
+		/* initiate the markedPoint value of the new Image */
+		this->markedPoint = Point2f(this->markedPoint.x - x, this->markedPoint.y - y);
+
+		this->img = Mat(this->img, Rect(x, y, realWidth, realHeight));
+		return *this;
 	}
 
 	void fastDetectCorner(bool debug = false) {
