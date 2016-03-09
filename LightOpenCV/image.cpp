@@ -187,7 +187,7 @@ public:
 	}
 
 	/* detect corner */
-	vector<Point2f> detectCorner(const char* quantity, bool debug = false, const char* path = "data.json") {
+	vector<Point2f> detectCorner(const char* quantity, bool debug = false, const char* path = "data.json", bool outputJSON = true) {
 		/* clock */
 		time_t start = clock();
 
@@ -217,9 +217,9 @@ public:
 
 			if (debug) {
 				circle(this->img, Corners[i], r, Scalar(255, 255, 255), 2, 8);
-				// ostringstream os;
-				// os << " (" << x << ", " << y << ")";
-				// putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
+				ostringstream os;
+				os << " (" << x << ", " << y << ")";
+				putText(this->img, os.str(), Corners[i], FONT_HERSHEY_SCRIPT_SIMPLEX, 0.6, Scalar(0, 0, 255), 1, 8);
 			}
 
 			double newDistance = sqrt((x - this->markedPoint.x) * (x - this->markedPoint.x) + (y - this->markedPoint.y) * (y - this->markedPoint.y));
@@ -268,24 +268,26 @@ public:
 			file.close();
 		}
 
-		Common::successPrint(data);
+		if (outputJSON) {
+			Common::successPrint(data);
+		}
 
 		return Corners;
 	}
 
-	Image cropImageWithCircle(Point2f center, double radius) {
+	Image cropImageWithCircle(Point2f center, double width, double height) {
 		/* initiate marked point */
 		this->markedPoint = Point2f(center.x, center.y);
 
 		/* for calculate x and y to see whether the start point is outside the image you want to crop */
-		double x = this->markedPoint.x - radius;
+		double x = this->markedPoint.x - width;
 		x = x < 0 ? 0.0 : x;
-		double y = this->markedPoint.y - radius;
+		double y = this->markedPoint.y - height;
 		y = y < 0 ? 0.0 : y;
 
 		/* if the start point is outside the image, the radius should be change relatively */
-		double realWidth = x == 0.0 ? this->markedPoint.x + radius : radius * 2;
-		double realHeight = y == 0.0 ? this->markedPoint.y + radius : radius * 2;
+		double realWidth = x == 0.0 ? this->markedPoint.x + width : width * 2;
+		double realHeight = y == 0.0 ? this->markedPoint.y + height : height * 2;
 
 		/* initiate the drop value */
 		this->dropPoint = Point2f(x, y);
@@ -337,6 +339,10 @@ public:
 	/* height */
 	int getHeight() {
 		return this->img.rows;
+	}
+
+	Point2f getDropPoint() {
+		return this->dropPoint;
 	}
 
 	/* size */
