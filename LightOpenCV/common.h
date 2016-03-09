@@ -7,4 +7,8 @@ enum lucasKanadeType{
 	VIDEO, FRAMES
 };
 
+enum lucasKanadeSaveType {
+	NORMAL, FIXED_POINT, STATIC_DETECTION
+};
+
 #endif // !COMMON_CPP
