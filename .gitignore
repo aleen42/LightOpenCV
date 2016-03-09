@@ -281,4 +281,4 @@ $RECYCLE.BIN/
 *.lnk
 
 ======= privacy code =======
-core/*
+LightOpenCV/core/*
