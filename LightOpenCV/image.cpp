@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Feb 18th, 2016 
+ *      - Update Time: Mar 9th, 2016 
  *
  **********************************************************************/
 
@@ -347,5 +347,12 @@ public:
 	/* pointer to the matrix */
 	uchar* getPtr(int n) {
 		return this->img.ptr<uchar>(n);
+	}
+
+	/* set markedPoints */
+	Image setMarked(float x, float y) {
+		this->markedPoint = Point2f(x, y);
+
+		return *this;
 	}
 };
