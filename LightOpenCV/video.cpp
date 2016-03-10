@@ -82,7 +82,7 @@ public:
 		int total = endFrame - startFrame;
 		/* dynamical array of images for storing all the frames */
 		std::vector<Image> images(total + 1);
-		int i, j = 0;
+		int i = 0, j = 0;
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, startFrame);
 		for (; i <= endFrame; i++) {
