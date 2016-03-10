@@ -62,14 +62,11 @@ public:
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
 
-		size_t i = 0;
-		/* reserved Mat */
+		this->setFrames(frameNum);
+
 		Mat reserved;
-		do {
-			/* read the frame */
-			this->vdo.read(reserved);	
-		} while (i++ == frameNum);
-		
+		this->vdo.read(reserved);
+				
 		/* return the image */
 		return Image(reserved);
 	}
@@ -77,14 +74,15 @@ public:
 	/* capture frames*/
 	/* save the image when output is true */
 	/* images will be saved in the current directory by default */
-	std::vector<Image> capture(int startFrame, int endFrame, bool output = false, const char* path = "") {
+	std::vector<Image> capture(size_t startFrame, size_t endFrame, bool output = false, const char* path = "") {
 		/* total number of frames */
-		int total = endFrame - startFrame;
+		size_t total = endFrame - startFrame;
 		/* dynamical array of images for storing all the frames */
 		std::vector<Image> images(total + 1);
-		int i = startFrame, j = 0;
-		/* this func will cause problems of losing precision */
-		this->vdo.set(CV_CAP_PROP_POS_FRAMES, startFrame);
+		
+		this->setFrames(startFrame);
+		size_t i = startFrame;
+
 		for (; i <= endFrame; i++) {
 			Mat reservedImg;
 			this->vdo.read(reservedImg);
@@ -96,6 +94,7 @@ public:
 				cout << "save image: " + num << endl;
 			}
 		}
+
 		return images;
 	}
 
@@ -103,5 +102,20 @@ public:
 	/* get the total number of frames */
 	int getTotalFramesNum() {
 		return this->vdo.get(CV_CAP_PROP_FRAME_COUNT);
+	}
+
+	/* rewrite set frame */
+	void setFrames(size_t n) {
+		/* this func will cause problems of losing precision */
+		this->vdo.set(CV_CAP_PROP_POS_FRAMES, 0);
+
+		size_t i = 0;
+		
+		Mat reserved;
+		/* reserved Mat */
+		while (i++ < n) {
+			/* read the frame */
+			this->vdo.read(reserved);
+		}
 	}
 };
