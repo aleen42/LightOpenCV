@@ -28,6 +28,7 @@ class Video
 protected:
 	VideoCapture vdo;								// the container of the video
 	const char* path;								// the local path of the video
+	Mat bufferFrame;								// to store each buffer frame after capturing
 public:
 	/* constructors of the class */
 	Video() {}
@@ -55,19 +56,30 @@ public:
 		return this->vdo;
 	}
 
+	Mat getBufferFrame() {
+		return this->bufferFrame;
+	}
+
 	/* capture frame */
 	/* frame: the frame number */
-	Image capture(int frameNum){
+	Image capture(int frameNum, bool isBuffer = false){
 		/* set the frame */
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
 		this->setFrames(frameNum);
 
-		Mat reserved;
-		this->vdo.read(reserved);
-				
-		/* return the image */
-		return Image(reserved);
+		if (isBuffer) {
+			this->vdo.read(this->bufferFrame);
+			/* return the image */
+			return Image(this->bufferFrame);	
+		} else {
+			Mat reserved;
+
+			this->vdo.read(reserved);
+
+			/* return the image */
+			return Image(reserved);
+		}
 	}
 
 	/* capture frames*/
@@ -124,6 +136,8 @@ public:
 		while (i++ < n) {
 			/* read the frame */
 			this->vdo.read(reserved);
+
+			// cout << "Frame Head: " << i << endl;
 		}
 	}
 };
