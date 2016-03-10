@@ -59,11 +59,17 @@ public:
 	/* frame: the frame number */
 	Image capture(int frameNum){
 		/* set the frame */
-		this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
+		/* this func will cause problems of losing precision */
+		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
+
+		size_t i = 0;
 		/* reserved Mat */
 		Mat reserved;
-		/* read the frame */
-		this->vdo.read(reserved);
+		do {
+			/* read the frame */
+			this->vdo.read(reserved);	
+		} while (i++ == frameNum);
+		
 		/* return the image */
 		return Image(reserved);
 	}
@@ -77,12 +83,13 @@ public:
 		/* dynamical array of images for storing all the frames */
 		std::vector<Image> images(total + 1);
 		int i, j = 0;
-		for (i = startFrame; i <= endFrame; i++) {
-			this->vdo.set(CV_CAP_PROP_POS_FRAMES, i);
+		/* this func will cause problems of losing precision */
+		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, startFrame);
+		for (; i <= endFrame; i++) {
 			Mat reservedImg;
 			this->vdo.read(reservedImg);
 			/* save the image when output is [true] */
-			if (output) {
+			if (output && i >= startFrame) {
 				string num = Common::intToStr(i);
 				string reserved(path);
 				imwrite((reserved + num + ".jpg").c_str(), reservedImg);
