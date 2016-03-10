@@ -57,7 +57,7 @@ public:
 
 	/* capture frame */
 	/* frame: the frame number */
-	Image capture(double frameNum){
+	Image capture(int frameNum){
 		/* set the frame */
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
@@ -79,7 +79,7 @@ public:
 		/* dynamical array of images for storing all the frames */
 		std::vector<Image> images(total + 1);
 		
-		this->setFrames((double)startFrame);
+		this->setFrames(startFrame);
 		size_t i = startFrame;
 
 		for (; i <= endFrame; i++) {
@@ -109,8 +109,12 @@ public:
 	}
 
 	/* rewrite set frame */
-	void setFrames(double n) {
+	void setFrames(int n) {
 		/* this func will cause problems of losing precision */
-		this->vdo.set(CV_CAP_PROP_POS_FRAMES, n - 1);
+		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, n - (double)1);
+		double frameRate = this->vdo.get(CV_CAP_PROP_FPS);
+		double frameTime = 1000.0 * (n - 1) / frameRate;
+
+		this->vdo.set(CV_CAP_PROP_POS_MSEC, frameTime);
 	}
 };
