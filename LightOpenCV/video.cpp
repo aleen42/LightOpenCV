@@ -33,6 +33,10 @@ public:
 	/* constructors of the class */
 	Video() {}
 	Video(VideoCapture vdo) : vdo(vdo) {}
+	/* deconstructor of the class */
+	~Video() {
+		// cout << "release a video" << endl;
+	}
 	
 	/* read the video from the local path */
 	void readVideo(const char* path) {
@@ -66,7 +70,7 @@ public:
 		/* set the frame */
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
-		this->setFrames(frameNum);
+		this->setFrames(frameNum, false);
 
 		if (isBuffer) {
 			this->vdo.read(this->bufferFrame);
@@ -121,23 +125,22 @@ public:
 	}
 
 	/* rewrite set frame */
-	void setFrames(int n) {
+	void setFrames(int n, bool isPrecise = true) {
 		/* this func will cause problems of losing precision */
-		this->vdo.set(CV_CAP_PROP_POS_FRAMES, (double)0);
-		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, n - (double)1);
-		// double frameRate = this->vdo.get(CV_CAP_PROP_FPS);
-		// double frameTime = 1000.0 * n / frameRate;
+		if (isPrecise) {
+			this->vdo.set(CV_CAP_PROP_POS_FRAMES, (double)0);
+			int i = 0;
+			
+			Mat reserved;
+			/* reserved Mat */
+			while (i++ < n) {
+				/* read the frame */
+				this->vdo.read(reserved);
 
-		// this->vdo.set(CV_CAP_PROP_POS_MSEC, frameTime);
-		int i = 0;
-		
-		Mat reserved;
-		/* reserved Mat */
-		while (i++ < n) {
-			/* read the frame */
-			this->vdo.read(reserved);
-
-			// cout << "Frame Head: " << i << endl;
+				// cout << "Frame Head: " << i << endl;
+			}
+		} else {
+			this->vdo.set(CV_CAP_PROP_POS_FRAMES, (double)n);
 		}
 	}
 };

@@ -72,6 +72,11 @@ public:
 		this->dropPoint = Point2f(0.0, 0.0);
 	}
 
+	/* deconstructor of the class */
+	~Image() {
+		// cout << "release an image" << endl;
+	}
+
 	/* read the image from a local path */
 	void readImage(const char* path) {
 		/* set the path */
@@ -187,7 +192,7 @@ public:
 	}
 
 	/* detect corner */
-	vector<Point2f> detectCorner(const char* quantity, bool debug = false, const char* path = "data.json", bool outputJSON = true) {
+	std::vector<Point2f> detectCorner(const char* quantity, bool debug = false, const char* path = "data.json", bool outputJSON = true) {
 		/* clock */
 		time_t start = clock();
 
@@ -212,6 +217,10 @@ public:
 		Point2f shortestPoint;
 
 		for (size_t i = 0; i < Corners.size(); i++) {
+			/* recover the drop distance */
+			Corners[i].x = Corners[i].x + this->dropPoint.x;
+			Corners[i].y = Corners[i].y + this->dropPoint.y;
+
 			double x = (double)Corners[i].x;
 			double y = (double)Corners[i].y;
 
@@ -271,6 +280,8 @@ public:
 		if (outputJSON) {
 			Common::successPrint(data);
 		}
+
+		std::vector<Point2f>(Corners).swap(Corners);
 
 		return Corners;
 	}
