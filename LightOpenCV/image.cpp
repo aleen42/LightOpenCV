@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Mar 9th, 2016 
+ *      - Update Time: Mar 28th, 2016 
  *
  **********************************************************************/
 
@@ -78,11 +78,16 @@ public:
 	}
 
 	/* read the image from a local path */
-	void readImage(const char* path) {
+	void readImage(const char* path, bool isTransparent = false) {
 		/* set the path */
 		this->path = path;
 		/* read the image according to the path */
-		this->img = imread(path);
+		if (isTransparent) {
+			this->img = imread(path, IMREAD_UNCHANGED);
+		} else {
+			this->img = imread(path);
+		}
+
 		/* check existence */
 		if (this->img.empty()) {
 			ostringstream os;
@@ -91,6 +96,16 @@ public:
 			/* exit */
 			exit(-1);
 		}
+	}
+
+	/* merge an image overlay this image */
+	void mergeImage(const char* overlayPath, int x, int y) {
+		Mat mask = imread(overlayPath, 0);
+		Mat logo = imread(overlayPath);
+		Mat imageROI;
+
+		imageROI = this->img(Rect(x, y, logo.cols, logo.rows));
+		logo.copyTo(imageROI, mask);
 	}
 
 	/* threshold algorithm */
@@ -326,6 +341,18 @@ public:
 		imwrite(path, this->img);
 	}
 
+	/* pad an image without changing content size */
+	void pad(int width, int height) {
+		Mat img(width, height, CV_8UC3);
+
+		Mat padded;
+		padded.create(this->img.rows + height, this->img.cols + width, this->img.type());
+		padded.setTo(Scalar::all(0));
+
+		this->img.copyTo(padded(Rect(0, 0, this->img.cols, this->img.rows)));
+
+		this->img = padded;
+	}
 
 	/* a mothod to show the image */
 	void showImage() {
