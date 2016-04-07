@@ -89,7 +89,7 @@ public:
 	/* capture frames*/
 	/* save the image when output is true */
 	/* images will be saved in the current directory by default */
-	std::vector<Image> capture(int startFrame, int endFrame, bool output = false, const char* path = "") {
+	std::vector<Image> capture(int startFrame, int endFrame, bool output = false, const char* path = "", string filename = "") {
 		/* total number of frames */
 		size_t total = endFrame - startFrame;
 		/* dynamical array of images for storing all the frames */
@@ -105,7 +105,7 @@ public:
 			if (output && i >= startFrame) {
 				string num = Common::intToStr(i);
 				string reserved(path);
-				imwrite((reserved + num + ".jpg").c_str(), reservedImg);
+				imwrite((reserved + filename + num + ".jpg").c_str(), reservedImg);
 				cout << "save image: " + num << endl;
 			}
 		}
