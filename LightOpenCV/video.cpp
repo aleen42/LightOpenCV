@@ -105,7 +105,7 @@ public:
 			if (output && i >= startFrame) {
 				string num = Common::intToStr(i);
 				string reserved(path);
-				imwrite((reserved + filename + num + ".jpg").c_str(), reservedImg);
+				imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
 				cout << "save image: " + num << endl;
 			}
 		}
