@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: video class for all the video obj
  *      - Create Time: Dec 4th, 2015
- *      - Update Time: Mar 4th, 2016 
+ *      - Update Time: Apr 14th, 2016 
  *
  **********************************************************************/
 
@@ -89,24 +89,56 @@ public:
 	/* capture frames*/
 	/* save the image when output is true */
 	/* images will be saved in the current directory by default */
-	std::vector<Image> capture(int startFrame, int endFrame, bool output = false, const char* path = "", string filename = "") {
+	std::vector<string> capture(int startFrame, int endFrame, bool output = false, const char* path = "", string filename = "") {
 		/* total number of frames */
 		size_t total = endFrame - startFrame;
 		/* dynamical array of images for storing all the frames */
-		std::vector<Image> images(total + 1);
+		/* store string rather than Image objects because those objects will eat all the memory */
+		std::vector<string> images;
 		
-		this->setFrames(startFrame);
-		size_t i = startFrame;
+		this->setFrames(startFrame, false);
 
-		for (; i <= endFrame; i++) {
-			Mat reservedImg;
-			this->vdo.read(reservedImg);
+		/* use ffmpeg to improve speed */
+		string videoPath(this->path);
+		string framePath(path);
+		string cmd = "ffmpeg -r \"" + Common::doubleToStr(this->getVideo().get(CV_CAP_PROP_FPS)) + "\" -i " + videoPath + " -vframes \"" + Common::intToStr(total + 1) + "\" \"" + framePath + "f" + filename + "_%1d.png\"";
+		
+		/* excute the command */
+		FILE* captureProcess = popen(cmd.c_str(), "w");
+		
+		if (captureProcess == NULL) {
+			ostringstream os;
+			os << "Failed to capture frames from the video";
+			Common::errorPrint(os.str().c_str());
+			/* exit */
+			exit(-1);
+		}
+
+		pclose(captureProcess);
+
+		/* this loop will cost too much time */
+		// size_t i = startFrame;
+		// for (; i <= endFrame; i++) {
+		// 	Mat reservedImg;
+		// 	this->vdo.read(reservedImg);
+		// 	/* save the image when output is [true] */
+		// 	if (output && i >= startFrame) {
+		// 		string num = Common::intToStr(i);
+		// 		string reserved(path);
+
+		// 		// imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
+		// 		images.push_back(reserved + "f" + filename + "_" + num + ".png");
+		// 		cout << "save image: " + num << endl;
+		// 	}
+		// }
+		
+		size_t i = 1;
+		for (; i <= total + 1; i++) {
 			/* save the image when output is [true] */
 			if (output && i >= startFrame) {
 				string num = Common::intToStr(i);
 				string reserved(path);
-				imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
-				cout << "save image: " + num << endl;
+				images.push_back(reserved + "f" + filename + "_" + num + ".png");
 			}
 		}
 

@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Mar 28th, 2016 
+ *      - Update Time: Apr 14th, 2016 
  *
  **********************************************************************/
 
@@ -398,5 +398,48 @@ public:
 		this->markedPoint = Point2f(x, y);
 
 		return *this;
+	}
+
+	/* convert file to Mat directly without creating an instance */
+	static Mat read(const char* path, bool isTransparent = false) {
+		/* read the image according to the path */
+		Mat result;
+		if (isTransparent) {
+			result = imread(path, IMREAD_UNCHANGED);
+		} else {
+			result = imread(path);
+		}
+
+		/* check existence */
+		if (result.empty()) {
+			ostringstream os;
+			os << "Cannot load image from " << path;
+			Common::errorPrint(os.str().c_str());
+			/* exit */
+			exit(-1);
+		}
+
+		return result;
+	}
+
+	static Mat read(string path, bool isTransparent = false) {
+		/* read the image according to the path */
+		Mat result;
+		if (isTransparent) {
+			result = imread(path.c_str(), IMREAD_UNCHANGED);
+		} else {
+			result = imread(path.c_str());
+		}
+
+		/* check existence */
+		if (result.empty()) {
+			ostringstream os;
+			os << "Cannot load image from" << path;
+			Common::errorPrint(os.str().c_str());
+			/* exit */
+			exit(-1);
+		}
+
+		return result;
 	}
 };

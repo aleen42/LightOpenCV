@@ -8,7 +8,7 @@ enum lucasKanadeType{
 };
 
 enum lucasKanadeSaveType {
-	NORMAL, FIXED_POINT, STATIC_DETECTION
+	NORMAL, FIXED_POINT, STATIC_DETECTION, REVERSE
 };
 
 #endif // !COMMON_CPP
