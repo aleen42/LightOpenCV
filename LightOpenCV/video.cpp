@@ -23,6 +23,8 @@
 #include "image.h"
 #include "common.h"
 
+// #define FFMPEG
+
 class Video
 {
 protected:
@@ -98,6 +100,8 @@ public:
 		
 		this->setFrames(startFrame, false);
 
+#ifdef FFMPEG
+
 		/* use ffmpeg to improve speed */
 		string videoPath(this->path);
 		string framePath(path);
@@ -105,7 +109,7 @@ public:
 		
 		/* excute the command */
 		FILE* captureProcess = popen(cmd.c_str(), "w");
-		
+
 		if (captureProcess == NULL) {
 			ostringstream os;
 			os << "Failed to capture frames from the video";
@@ -116,22 +120,6 @@ public:
 
 		pclose(captureProcess);
 
-		/* this loop will cost too much time */
-		// size_t i = startFrame;
-		// for (; i <= endFrame; i++) {
-		// 	Mat reservedImg;
-		// 	this->vdo.read(reservedImg);
-		// 	/* save the image when output is [true] */
-		// 	if (output && i >= startFrame) {
-		// 		string num = Common::intToStr(i);
-		// 		string reserved(path);
-
-		// 		// imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
-		// 		images.push_back(reserved + "f" + filename + "_" + num + ".png");
-		// 		cout << "save image: " + num << endl;
-		// 	}
-		// }
-		
 		size_t i = 1;
 		for (; i <= total + 1; i++) {
 			/* save the image when output is [true] */
@@ -141,6 +129,28 @@ public:
 				images.push_back(reserved + "f" + filename + "_" + num + ".png");
 			}
 		}
+
+#endif
+
+#ifndef FFMPEG
+	
+		/* this loop will cost too much time */
+		size_t i = startFrame;
+		for (; i <= endFrame; i++) {
+			Mat reservedImg;
+			this->vdo.read(reservedImg);
+			/* save the image when output is [true] */
+			if (output && i >= startFrame) {
+				string num = Common::intToStr(i);
+				string reserved(path);
+
+				// imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
+				images.push_back(reserved + "f" + filename + "_" + num + ".png");
+				cout << "save image: " + num << endl;
+			}
+		}
+		
+#endif
 
 		return images;
 	}
