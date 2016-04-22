@@ -28,13 +28,16 @@
 class Video
 {
 protected:
+	camDetectionType detectType;					// the detection type
 	VideoCapture vdo;								// the container of the video
 	const char* path;								// the local path of the video
 	Mat bufferFrame;								// to store each buffer frame after capturing
 public:
 	/* constructors of the class */
 	Video() {}
-	Video(VideoCapture vdo) : vdo(vdo) {}
+	Video(VideoCapture vdo) : vdo(vdo) {
+		this->detectType = DEFAULT;
+	}
 	/* deconstructor of the class */
 	~Video() {
 		// cout << "release a video" << endl;
@@ -45,8 +48,7 @@ public:
 		/* set the path */
 		this->path = path;
 		/* read the video according to the path */
-		
-		this->vdo = VideoCapture(this->path);
+		this->vdo = (strcmp(path, "camera") == 0) ? VideoCapture(0) : VideoCapture(this->path);
 
 		/* check existence */
 		if (!this->vdo.isOpened()) {
@@ -55,6 +57,42 @@ public:
 			Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
+		}
+	}
+	
+	/* detect video */
+	Video detectVideo(camDetectionType type) {
+		this->detectType = type;
+		return *this;
+	}
+
+	/* show video directly */
+	void showVideo() {
+		for (;;) {
+			Mat frame;
+			if (this->vdo.read(frame)) {
+
+				if (this->detectType != DEFAULT) {
+					Image image(frame);
+					switch (this->detectType)
+					{
+					case DETECT_CAM_SQUARE:
+						image.detectSquare(true);
+						break;
+					default:
+						break;
+					}
+				}
+				imshow("video", frame);
+			}
+			else {
+				break;
+			}
+
+			/* wait for key to return */
+			if (waitKey(30) >= 0) {
+				break;
+			}
 		}
 	}
 

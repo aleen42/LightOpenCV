@@ -69,11 +69,14 @@
     <ClInclude Include="common.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
-    <ClInclude Include="lucas_kanade.h">
-      <Filter>头文件\Video\Track</Filter>
-    </ClInclude>
     <ClInclude Include="cJSON.h">
       <Filter>头文件\Common\cJson</Filter>
+    </ClInclude>
+    <ClInclude Include="core\lucas_kanade.h">
+      <Filter>头文件\Video\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="threshold.h">
+      <Filter>头文件\Video\Track</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,11 +101,14 @@
     <ClCompile Include="common.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="LucasKanade.cpp">
-      <Filter>源文件\Video\Track</Filter>
-    </ClCompile>
     <ClCompile Include="cJSON.c">
       <Filter>源文件\Common\cJson</Filter>
+    </ClCompile>
+    <ClCompile Include="core\LucasKanade.cpp">
+      <Filter>源文件\Video\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="Threshold.cpp">
+      <Filter>源文件\Video\Track</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

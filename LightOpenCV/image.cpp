@@ -42,9 +42,9 @@ protected:
 	/* show the detection of squares */
 	void debugSquares(vector<vector<Point> > points) {
 
-		for (int i = 0; i < points[0].size(); i++) {
-			printf("Point%d: (%d, %d)\n", i, points[0][i].x, points[0][i].y);
-		}
+		//for (int i = 0; i < points[0].size(); i++) {
+		//	printf("Point%d: (%d, %d)\n", i, points[0][i].x, points[0][i].y);
+		//}
 
 		drawContours(img, points, 0, Scalar(255, 0, 0), 1, 8, vector<Vec4i>(), 0, Point());
 		// for (int i = 0; i < points.size(); i++) {
@@ -134,6 +134,36 @@ public:
 		/* contours Points array*/
 		vector<vector<Point> > contours;
 
+		vector<Vec4i> hierarchy;
+
+		findContours(gray0, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+		/* test contours */
+		vector<Point> approx;
+		for (size_t i = 0; i < contours.size(); i++) {
+			/* approximate contour with accuracy proportional to the contour perimeter */
+			approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.02, true);
+
+			/*
+			* Note: absolute value of an area is used becuase
+			*       area may be positive or negative, in accordance
+			*		 with the contour orientation
+			*/
+			if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000 && isContourConvex(Mat(approx))) {
+				double maxCosine = 0;
+
+				for (int j = 2; j < 5; j++) {
+					double cosine = fabs(angle(approx[j % 4], approx[j - 2], approx[j - 1]));
+					maxCosine = MAX(maxCosine, cosine);
+				}
+
+				reserved.push_back(approx);
+
+			}
+		}
+
+		return reserved;
+
 		/* find squares in every color plane of the image */
 		for (int c = 0; c < 3; c++) {
 			int ch[] = { c, 0 };
@@ -150,22 +180,22 @@ public:
 				/* Use Canny instead of zero threshold level */
 				/* Canny helps to catch squares with gradient shading */
 				if (l == 0) {
-					Canny(gray0, gray, lowThreshold, ratio * lowThreshold, 3);
+					Canny(gray0, gray0, lowThreshold, ratio * lowThreshold, 3);
 
 					/* Dilage helps to remove potential holes between edge segments */
-					dilate(gray, gray, Mat(), Point(-1, -1));
+					dilate(gray0, gray0, Mat(), Point(-1, -1));
 				} else {
-					gray = gray0 >= (l + 1) * 255 / threshold_level;
+					gray0 = gray0 >= (l + 1) * 255 / threshold_level;
 				}
 
 				vector<Vec4i> hierarchy;
 				/* find contours and store them in a list */
-				findContours(gray, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+				findContours(gray0, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 				
 				/* draw contours to improve accuracy */
-				for (size_t i = 0; i < contours.size(); i++) {
-					drawContours(this->img, contours, i, Scalar(0, 0, 0), 1, 8, hierarchy, 0, Point());
-				}
+				//for (size_t i = 0; i < contours.size(); i++) {
+				//	drawContours(this->img, contours, i, Scalar(0, 0, 0), 1, 8, hierarchy, 0, Point());
+				//}
 
 				/* test contours */
 				vector<Point> approx;
