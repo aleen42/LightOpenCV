@@ -182,7 +182,7 @@ public:
 				string num = Common::intToStr(i);
 				string reserved(path);
 
-				// imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
+				imwrite((reserved + filename + num + ".png").c_str(), reservedImg);
 				images.push_back(reserved + "f" + filename + "_" + num + ".png");
 				cout << "save image: " + num << endl;
 			}
