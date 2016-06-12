@@ -4,10 +4,10 @@
  *      |  _  |/ \   ____  ____ __ ___     / ___\/ \   __   _  ____  _
  *      | |_| || |  / __ \/ __ \\ '_  \ _ / /    | |___\ \ | |/ __ \| |
  *      |  _  || |__. ___/. ___/| | | ||_|\ \___ |  _  | |_| |. ___/| |
- *      |_/ \_|\___/\____|\____||_| |_|    \____/|_| |_|_____|\____||_| 
- *                                                                      
+ *      |_/ \_|\___/\____|\____||_| |_|    \____/|_| |_|_____|\____||_|
+ *
  *      ================================================================
- *                 More than a coder, More than a designer              
+ *                 More than a coder, More than a designer
  *      ================================================================
  *
  *
@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: image class for all the image obj
  *      - Create Time: Nov 29th, 2015
- *      - Update Time: Apr 14th, 2016 
+ *      - Update Time: Apr 14th, 2016
  *
  **********************************************************************/
 
@@ -41,28 +41,63 @@ protected:
 
 	/* show the detection of squares */
 	void debugSquares(vector<vector<Point> > points) {
+		cout << "detected square" << endl;
 
-		//for (int i = 0; i < points[0].size(); i++) {
-		//	printf("Point%d: (%d, %d)\n", i, points[0][i].x, points[0][i].y);
-		//}
+		for (int i = 0; i < points.size(); i++) {
+			printf("Squares %d\n", i);
 
-		drawContours(img, points, 0, Scalar(255, 0, 0), 1, 8, vector<Vec4i>(), 0, Point());
-		// for (int i = 0; i < points.size(); i++) {
-		// 	/* draw contour */
-		// 	drawContours(img, points, i, Scalar(255, 0, 0), 1, 8, vector<Vec4i>(), 0, Point());
+			for (int j = 0; j < points[i].size(); j++) {
+				printf("Point%d: (%d, %d)\n", j, points[i][j].x, points[i][j].y);
+			}
+		}
 
-		// 	/* draw bounding rect */
-		// 	Rect rect = boundingRect(Mat(points[i]));
-		// 	rectangle(img, rect.tl(), rect.br(), cv::Scalar(255, 0, 0), 2, 8, 0);
+		for (int i = 0; i < points.size(); i++) {
+			/* draw contour */
+			drawContours(img, points, i, Scalar(0, 0, 255), 3, 8, vector<Vec4i>(), 0, Point());
 
-		// 	/* draw rotated rect */
-		// 	RotatedRect minRect = minAreaRect(Mat(points[i]));
-		// 	Point2f rect_points[4];
-		// 	minRect.points(rect_points);
-		// 	for (int j = 0; j < 4; j++) {
-		// 		line(img, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 0, 255), 1, 8);
-		// 	}
-		// }
+			/* draw bounding rect */
+			// Rect rect = boundingRect(Mat(points[i]));
+			// rectangle(img, rect.tl(), rect.br(), Scalar(0, 0, 255), 3, 8, 0);
+
+			// /* draw rotated rect */
+			// RotatedRect minRect = minAreaRect(Mat(points[i]));
+			// Point2f rect_points[4];
+			// minRect.points(rect_points);
+			// for (int j = 0; j < 4; j++) {
+			// 	line(img, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 0, 255), 3, 8);
+			// }
+		}
+	}
+
+	/* calculate the size of your screen */
+	double calcScreenWidth() {
+		const char* widthCmd = "xrandr |grep '*' | sed 's/ *\\([^ ]*\\)x.*/\\1/'";
+		FILE* fpipe = (FILE*)popen(widthCmd, "r");
+		char line[256];
+		double width;
+
+		while (fgets( line, sizeof(line), fpipe)) {
+			width = atof(line);
+		}
+
+		pclose(fpipe);
+
+		return width;
+	}
+
+	double calcScreenHeight() {
+		const char* heightCmd = "xrandr |grep '*' | sed 's/.*x\\([^ ]*\\).*/\\1/'";
+		FILE* fpipe = (FILE*)popen(heightCmd, "r");
+		char line[256];
+		double height;
+
+		while (fgets( line, sizeof(line), fpipe)) {
+			height = atof(line);
+		}
+
+		pclose(fpipe);
+
+		return height;
 	}
 public:
 	/* constructors of the class */
@@ -129,6 +164,8 @@ public:
 
 		Mat gray0(blurred.size(), CV_8U), gray;
 
+		int areaMinSize = 1000;
+
 		/* reserved Points array */
 		vector<vector<Point> > reserved;
 		/* contours Points array*/
@@ -138,40 +175,14 @@ public:
 
 		findContours(gray0, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-		/* test contours */
-		vector<Point> approx;
-		for (size_t i = 0; i < contours.size(); i++) {
-			/* approximate contour with accuracy proportional to the contour perimeter */
-			approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.02, true);
-
-			/*
-			* Note: absolute value of an area is used becuase
-			*       area may be positive or negative, in accordance
-			*		 with the contour orientation
-			*/
-			if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000 && isContourConvex(Mat(approx))) {
-				double maxCosine = 0;
-
-				for (int j = 2; j < 5; j++) {
-					double cosine = fabs(angle(approx[j % 4], approx[j - 2], approx[j - 1]));
-					maxCosine = MAX(maxCosine, cosine);
-				}
-
-				reserved.push_back(approx);
-
-			}
-		}
-
-		return reserved;
-
 		/* find squares in every color plane of the image */
 		for (int c = 0; c < 3; c++) {
 			int ch[] = { c, 0 };
-			
+
 			/* canny ratio which is recommended as 3 by Canny */
 			int ratio = 2;
 			int lowThreshold = 10;
-			
+
 			mixChannels(&blurred, 1, &gray0, 1, ch, 1);
 
 			/* try several threshold level */
@@ -191,14 +202,15 @@ public:
 				vector<Vec4i> hierarchy;
 				/* find contours and store them in a list */
 				findContours(gray0, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-				
+
 				/* draw contours to improve accuracy */
-				//for (size_t i = 0; i < contours.size(); i++) {
-				//	drawContours(this->img, contours, i, Scalar(0, 0, 0), 1, 8, hierarchy, 0, Point());
-				//}
+				for (size_t i = 0; i < contours.size(); i++) {
+					drawContours(this->img, contours, i, Scalar(0, 0, 0), 1, 8, hierarchy, 0, Point());
+				}
 
 				/* test contours */
 				vector<Point> approx;
+
 				for (size_t i = 0; i < contours.size(); i++) {
 					/* approximate contour with accuracy proportional to the contour perimeter */
 					approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.02, true);
@@ -210,7 +222,7 @@ public:
 					 */
 					// cout << "size: " << approx.size() << endl;
 					// cout << "area: " << fabs(contourArea(Mat(approx))) << endl;
-					if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000 && isContourConvex(Mat(approx))) {
+					if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > areaMinSize && isContourConvex(Mat(approx))) {
 						double maxCosine = 0;
 
 						for (int j = 2; j < 5; j++) {
@@ -255,7 +267,7 @@ public:
 		cvtColor(this->img, gray, COLOR_BGR2GRAY);
 
 		goodFeaturesToTrack(gray, Corners, maxCorners, qualityLevels, minDistance, Mat(), blockSize, useHarrisDetector);
-		
+
 		cJSON* pointsArray = cJSON_CreateArray();
 
 		double distance = 99999.0;
@@ -300,7 +312,7 @@ public:
 
 		cJSON_AddNumberToObject(data, "width", this->img.cols);
 		cJSON_AddNumberToObject(data, "height", this->img.rows);
-		
+
 
 		cJSON* item = cJSON_CreateObject();
 		cJSON_AddNumberToObject(item, "x", shortestPoint.x);
@@ -315,7 +327,7 @@ public:
 		/* write the data.json */
 		ofstream file;
 		file.open(path, ios::out);
-		
+
 		if (file.is_open()) {
 			cJSON_AddItemToObject(data, "data", pointsArray);
 			file << cJSON_Print(data);
@@ -385,9 +397,13 @@ public:
 	}
 
 	/* a mothod to show the image */
-	void showImage() {
+	void showImage(const char* windowName = "result") {
+		/* scale to fit the screen */
+		namedWindow(windowName, WINDOW_NORMAL);
+		resizeWindow(windowName, (int)this->calcScreenWidth(), (int)this->calcScreenHeight());
+
 		/* open the image */
-		imshow("image", this->img);
+		imshow(windowName, this->img);
 		/* wait for the return */
 		waitKey();
 	}

@@ -4,10 +4,10 @@
  *      |  _  |/ \   ____  ____ __ ___     / ___\/ \   __   _  ____  _
  *      | |_| || |  / __ \/ __ \\ '_  \ _ / /    | |___\ \ | |/ __ \| |
  *      |  _  || |__. ___/. ___/| | | ||_|\ \___ |  _  | |_| |. ___/| |
- *      |_/ \_|\___/\____|\____||_| |_|    \____/|_| |_|_____|\____||_| 
- *                                                                      
+ *      |_/ \_|\___/\____|\____||_| |_|    \____/|_| |_|_____|\____||_|
+ *
  *      ================================================================
- *                 More than a coder, More than a designer              
+ *                 More than a coder, More than a designer
  *      ================================================================
  *
  *
@@ -15,7 +15,7 @@
  *      - Author: aleen42
  *      - Description: video class for all the video obj
  *      - Create Time: Dec 4th, 2015
- *      - Update Time: Apr 14th, 2016 
+ *      - Update Time: Apr 14th, 2016
  *
  **********************************************************************/
 
@@ -42,7 +42,7 @@ public:
 	~Video() {
 		// cout << "release a video" << endl;
 	}
-	
+
 	/* read the video from the local path */
 	void readVideo(const char* path) {
 		/* set the path */
@@ -53,13 +53,13 @@ public:
 		/* check existence */
 		if (!this->vdo.isOpened()) {
 			ostringstream os;
-			os << "Cannot load video from" << path;
+			os << "Cannot load video from " << path;
 			Common::errorPrint(os.str().c_str());
 			/* exit */
 			exit(-1);
 		}
 	}
-	
+
 	/* detect video */
 	Video detectVideo(camDetectionType type) {
 		this->detectType = type;
@@ -106,7 +106,7 @@ public:
 
 	/* capture frame */
 	/* frame: the frame number */
-	Image capture(int frameNum, bool isBuffer = false){
+	Image capture(int frameNum, bool isBuffer = false) {
 		/* set the frame */
 		/* this func will cause problems of losing precision */
 		// this->vdo.set(CV_CAP_PROP_POS_FRAMES, frameNum);
@@ -115,7 +115,7 @@ public:
 		if (isBuffer) {
 			this->vdo.read(this->bufferFrame);
 			/* return the image */
-			return Image(this->bufferFrame);	
+			return Image(this->bufferFrame);
 		} else {
 			Mat reserved;
 
@@ -135,7 +135,7 @@ public:
 		/* dynamical array of images for storing all the frames */
 		/* store string rather than Image objects because those objects will eat all the memory */
 		std::vector<string> images;
-		
+
 		this->setFrames(startFrame, false);
 
 #ifdef FFMPEG
@@ -143,8 +143,8 @@ public:
 		/* use ffmpeg to improve speed */
 		string videoPath(this->path);
 		string framePath(path);
-		string cmd = "ffmpeg -r \"" + Common::doubleToStr(this->getVideo().get(CV_CAP_PROP_FPS)) + "\" -i " + videoPath + " -vframes \"" + Common::intToStr(total + 1) + "\" \"" + framePath + "f" + filename + "_%1d.png\"";
-		
+		string cmd = "ffmpeg -r \"" + Common::doubleToStr(this->getVideo().get(CV_CAP_PROP_FPS)) + "\" -ss " + Common::doubleToStr(startFrame / this->getVideo().get(CV_CAP_PROP_FPS)) + " -i " + videoPath + " -vframes \"" + Common::intToStr(total + 1) + "\" \"" + framePath + "f" + filename + "_%1d.png\"";
+
 		/* excute the command */
 		FILE* captureProcess = popen(cmd.c_str(), "w");
 
@@ -171,7 +171,7 @@ public:
 #endif
 
 #ifndef FFMPEG
-	
+
 		/* this loop will cost too much time */
 		size_t i = startFrame;
 		for (; i <= endFrame; i++) {
@@ -187,7 +187,7 @@ public:
 				cout << "save image: " + num << endl;
 			}
 		}
-		
+
 #endif
 
 		return images;
@@ -210,7 +210,7 @@ public:
 		if (isPrecise) {
 			this->vdo.set(CV_CAP_PROP_POS_FRAMES, (double)0);
 			int i = 0;
-			
+
 			Mat reserved;
 			/* reserved Mat */
 			while (i++ < n) {
